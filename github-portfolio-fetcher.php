@@ -1,29 +1,75 @@
-# PHP & WordPress Engineering Portfolio
+<?php
+/**
+ * Plugin Name: GitHub Portfolio Fetcher
+ * Description: Connects to the GitHub API, fetches your top repositories, and caches them for performance.
+ * Version:     1.0.0
+ * Author:      Vamsi Bodapati
+ */
 
-This repository documents my transition from Data Science to Backend Engineering, specifically focusing on the WordPress ecosystem. It contains two custom plugins built from scratch to demonstrate core WordPress development competencies.
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-## Project 1: Cricket Pace Calculator (OOP Architecture)
-**File:** `cricket-pace-calculator.php`
+class WP_Github_Fetcher {
 
-A physics-based calculator for bowling speed, re-engineered using Object-Oriented Programming principles.
+    public function __construct() {
+        add_shortcode( 'my_github_repos', array( $this, 'render_repos' ) );
+    }
 
-**Engineering Highlights:**
-* **Object-Oriented Architecture:** Implements a class-based structure with distinct methods for rendering and logic processing.
-* **Security:** Utilizes `floatval()` for input sanitization and validates data before processing.
-* **Shortcode API:** Registered via `[cricket_calculator]` for easy embedding.
-* **Separation of Concerns:** Decouples the UI rendering from the mathematical logic.
+    /**
+     * Fetch data from GitHub API with Caching (Transient API)
+     */
+    private function get_repos() {
+        // 1. Check if we have the data cached (saved in database) for 1 hour
+        $cached_repos = get_transient( 'vamsi_github_repos' );
+        if ( false !== $cached_repos ) {
+            return $cached_repos;
+        }
 
-## Project 2: GitHub Portfolio Fetcher (API Integration)
-**File:** `github-portfolio-fetcher.php`
+        // 2. If not cached, connect to GitHub API
+        $response = wp_remote_get( 'https://api.github.com/users/Vamsi0702/repos?sort=updated&per_page=5', array(
+            'user-agent' => 'WordPress-Portfolio-Site'
+        ));
 
-A widget that connects to the GitHub REST API to display live repository data.
+        // 3. Error Handling (If GitHub is down)
+        if ( is_wp_error( $response ) ) {
+            return [];
+        }
 
-**Engineering Highlights:**
-* **HTTP API:** Uses `wp_remote_get()` to consume external JSON APIs securely.
-* **Performance Caching:** Implements the WordPress Transients API to cache API responses for 1 hour, reducing server load and latency.
-* **Error Handling:** Gracefully manages API connection failures or timeouts.
-* **Data Parsing:** Decodes JSON responses and dynamically generates HTML output.
+        $body = wp_remote_retrieve_body( $response );
+        $data = json_decode( $body );
 
----
-**Author:** Vamsi Bodapati
-*Aspiring WordPress Engineer*
+        // 4. Save to Cache for 1 hour (3600 seconds) - Performance Boost!
+        set_transient( 'vamsi_github_repos', $data, 3600 );
+
+        return $data;
+    }
+
+    /**
+     * Render the HTML
+     */
+    public function render_repos() {
+        $repos = $this->get_repos();
+
+        if ( empty( $repos ) ) {
+            return '<p>Could not load GitHub repositories.</p>';
+        }
+
+        ob_start();
+        ?>
+        <div class="github-showcase" style="display: grid; gap: 15px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+            <?php foreach ( $repos as $repo ) : ?>
+                <div style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #fff;">
+                    <h3 style="margin: 0 0 10px 0;"><a href="<?php echo esc_url( $repo->html_url ); ?>" target="_blank" style="text-decoration:none; color:#0073aa;"><?php echo esc_html( $repo->name ); ?></a></h3>
+                    <p style="color: #666; font-size: 14px;"><?php echo esc_html( $repo->description ? $repo->description : 'No description.' ); ?></p>
+                    <div style="font-size: 12px; font-weight: bold; color: #333;">
+                        Stars: <?php echo intval( $repo->stargazers_count ); ?> | 
+                        Language: <?php echo esc_html( $repo->language ); ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <?php
+        return ob_get_clean();
+    }
+}
+
+new WP_Github_Fetcher();
