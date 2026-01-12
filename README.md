@@ -6,20 +6,37 @@ This repository documents my code, experiments, and plugins as I master the rtCa
 
 ## 🎯 Learning Roadmap
 
-### Phase 1: The Fundamentals (Current Focus)
+### Phase 1: The Fundamentals
 - [x] PHP 8.x Basics (Syntax, Arrays, Functions)
-- [ ] Object-Oriented PHP (Classes, Inheritance)
-- [ ] MySQL Database Integration
+- [x] Object-Oriented PHP (Classes, Inheritance)
+- [x] Security Best Practices (Sanitization, Validation)
 
 ### Phase 2: WordPress Core
-- [ ] Understanding `wp-config.php` and File Structure
-- [ ] The WordPress Loop
-- [ ] Theme Hierarchy
+- [x] Understanding `wp-config.php` and File Structure
+- [x] Plugin Architecture & Hooks
+- [x] Shortcode API
 
-### Phase 3: Plugin Development (Upcoming Project)
-- [ ] **Project:** "Cricket Pace Calculator" Plugin
-    - *Goal:* A custom plugin to calculate bowling speed based on distance/time.
-    - *Tech:* PHP Backend + JS Frontend.
+### Phase 3: Projects
+- [x] **Project:** "Cricket Pace Calculator" Plugin
+    - *Status:* **Completed** v1.1.0
+    - *Tech:* PHP Backend + HTML Forms + Unit Conversions.
+
+---
+
+## 🏏 Project Spotlight: Cricket Pace Calculator
+
+A custom WordPress plugin that calculates bowling speed based on pitch length and time.
+
+### **Features**
+* **Shortcode Based:** Use `[cricket_calculator]` on any page or post.
+* **Security:** Inputs are sanitized using `floatval()` to prevent injection.
+* **Physics Logic:** Converts standard Cricket Yardage (22yds) + Time (s) -> KPH & MPH.
+
+### **How to Test**
+1.  Download `cricket-pace-calculator.php`.
+2.  Upload to your WordPress `wp-content/plugins/` folder.
+3.  Activate via the Admin Dashboard.
+4.  Add the shortcode `[cricket_calculator]` to a page.
 
 ---
 *🌱 This repository is actively updated as I prepare for the Associate WordPress Engineer role.*
