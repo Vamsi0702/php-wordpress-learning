@@ -1,10 +1,10 @@
-# 🚀 PHP & WordPress Engineering Journey
+#  PHP & WordPress Engineering Journey
 
 Welcome to my learning repository! I am a Computer Science student (Data Science background) pivoting to Backend Engineering with a focus on the **WordPress Ecosystem**.
 
 This repository documents my code, experiments, and plugins as I master the rtCamp technology stack.
 
-## 🎯 Learning Roadmap
+##  Learning Roadmap
 
 ### Phase 1: The Fundamentals
 - [x] PHP 8.x Basics (Syntax, Arrays, Functions)
@@ -23,7 +23,7 @@ This repository documents my code, experiments, and plugins as I master the rtCa
 
 ---
 
-## 🏏 Project Spotlight: Cricket Pace Calculator
+##  Project Spotlight: Cricket Pace Calculator
 
 A custom WordPress plugin that calculates bowling speed based on pitch length and time.
 
@@ -39,4 +39,4 @@ A custom WordPress plugin that calculates bowling speed based on pitch length an
 4.  Add the shortcode `[cricket_calculator]` to a page.
 
 ---
-*🌱 This repository is actively updated as I prepare for the Associate WordPress Engineer role.*
+* This repository is actively updated as I prepare for the Associate WordPress Engineer role.*
