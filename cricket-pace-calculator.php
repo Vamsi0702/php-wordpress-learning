@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Cricket Pace Calculator
  * Plugin URI:  https://github.com/Vamsi0702/php-wordpress-learning
- * Description: A custom plugin to calculate cricket bowling speeds based on distance and time. Built to demonstrate PHP & JS skills.
- * Version:     1.1.0
+ * Description: An OOP-based WordPress plugin to calculate bowling velocity. Demonstrates Class architecture, Sanitation, and Shortcode API.
+ * Version:     1.2.0 (Enterprise Edition)
  * Author:      Vamsi Bodapati
  * Author URI:  https://github.com/Vamsi0702
  * License:     GPL-2.0+
@@ -12,79 +12,101 @@
 
 // Security: Prevent direct access to this file
 if ( ! defined( 'ABSPATH' ) ) {
-    exit; 
+	exit; 
 }
 
 /**
- * Main Function: Renders the calculator form and handles the math.
- * Usage: Place [cricket_calculator] on any page.
+ * Class Cricket_Pace_Calculator
+ * * Handles the logic, rendering, and processing of the bowling speed calculator.
+ * Built using Object-Oriented Programming (OOP) principles.
  */
-function cpc_render_calculator_shortcode() {
-    
-    // Initialize variables
-    $speed_kph = 0;
-    $speed_mph = 0;
-    $result_html = '';
+class Cricket_Pace_Calculator {
 
-    // Check if the form was submitted (Backend Logic)
-    if ( isset( $_POST['cpc_submit_speed'] ) ) {
-        
-        // 1. Sanitize Inputs (Security Best Practice)
-        $distance_yards = floatval( $_POST['cpc_distance'] ); // usually 22 yards
-        $time_seconds   = floatval( $_POST['cpc_time'] );
+	/**
+	 * Constructor: Hooks into WordPress.
+	 */
+	public function __construct() {
+		// Register the shortcode [cricket_calculator]
+		add_shortcode( 'cricket_calculator', array( $this, 'render_calculator' ) );
+	}
 
-        // 2. Perform Calculation (The Math)
-        // Formula: Speed = Distance / Time
-        if ( $distance_yards > 0 && $time_seconds > 0 ) {
-            
-            // Convert yards to meters (1 yard = 0.9144 meters)
-            $distance_meters = $distance_yards * 0.9144;
-            
-            // Speed in Meters per Second
-            $mps = $distance_meters / $time_seconds;
-            
-            // Convert to KPH (MPS * 3.6) and MPH (KPH * 0.621371)
-            $speed_kph = round( $mps * 3.6, 2 );
-            $speed_mph = round( $speed_kph * 0.621371, 2 );
+	/**
+	 * Renders the Calculator Form and Results.
+	 */
+	public function render_calculator() {
+		
+		// Initialize variables
+		$result_html = '';
 
-            // Create the Success Message
-            $result_html = "<div class='cpc-result' style='background: #e7f5e6; padding: 15px; margin-bottom: 20px; border-left: 5px solid #28a745;'>
-                                <strong>🚀 Delivery Speed:</strong> <br>
-                                <span style='font-size: 24px;'>{$speed_kph} KPH</span> / {$speed_mph} MPH
-                            </div>";
-        }
-    }
+		// Check if form is submitted via POST
+		if ( isset( $_POST['cpc_submit_speed'] ) ) {
+			$result_html = $this->process_calculation();
+		}
 
-    // 3. Render the HTML Form
-    // We use output buffering (ob_start) to return the HTML cleanly to WordPress
-    ob_start();
-    ?>
-    
-    <div class="cpc-calculator-wrapper" style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; max-width: 400px;">
-        <h3>🏏 Bowling Speed Calculator</h3>
-        
-        <?php echo $result_html; ?>
-        
-        <form method="post" action="">
-            <div style="margin-bottom: 15px;">
-                <label for="cpc_distance">Pitch Length (Yards):</label><br>
-                <input type="number" step="0.01" name="cpc_distance" id="cpc_distance" value="22" required style="width: 100%; padding: 8px;">
-                <small style="color: #666;">Standard pitch is 22 yards.</small>
-            </div>
-            
-            <div style="margin-bottom: 15px;">
-                <label for="cpc_time">Time (Seconds):</label><br>
-                <input type="number" step="0.001" name="cpc_time" id="cpc_time" placeholder="e.g. 0.45" required style="width: 100%; padding: 8px;">
-                <small style="color: #666;">Time from release to stumps.</small>
-            </div>
-            
-            <input type="submit" name="cpc_submit_speed" value="Calculate Speed" style="background: #0073aa; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px;">
-        </form>
-    </div>
+		// Output Buffering to ensure HTML loads in the correct place
+		ob_start();
+		?>
+		
+		<div class="cpc-wrapper" style="border: 1px solid #e0e0e0; padding: 25px; border-radius: 8px; max-width: 450px; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+			<h3 style="margin-top:0; border-bottom: 2px solid #0073aa; padding-bottom: 10px; color: #333;">🏏 Pace Calculator</h3>
+			
+			<?php echo $result_html; ?>
 
-    <?php
-    return ob_get_clean();
+			<form method="post" action="">
+				
+				<div style="margin-bottom: 20px;">
+					<label style="font-weight:bold; display:block; margin-bottom:5px;">Pitch Length (Yards)</label>
+					<input type="number" step="0.01" name="cpc_distance" value="22" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+					<small style="color: #666; display:block; margin-top:5px;">Standard test pitch is 22 yards.</small>
+				</div>
+
+				<div style="margin-bottom: 20px;">
+					<label style="font-weight:bold; display:block; margin-bottom:5px;">Time (Seconds)</label>
+					<input type="number" step="0.001" name="cpc_time" placeholder="e.g. 0.45" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+				</div>
+
+				<button type="submit" name="cpc_submit_speed" style="background: #0073aa; color: white; border: none; padding: 12px 25px; cursor: pointer; border-radius: 4px; font-weight: bold; width: 100%;">
+					Calculate Speed 🚀
+				</button>
+
+			</form>
+		</div>
+
+		<?php
+		return ob_get_clean();
+	}
+
+	/**
+	 * Handles the Math Logic.
+	 * * @return string HTML formatted result.
+	 */
+	private function process_calculation() {
+		
+		// 1. Sanitize Inputs (Security)
+		$yards = isset( $_POST['cpc_distance'] ) ? floatval( $_POST['cpc_distance'] ) : 0;
+		$time  = isset( $_POST['cpc_time'] ) ? floatval( $_POST['cpc_time'] ) : 0;
+
+		// 2. Validation
+		if ( $yards <= 0 || $time <= 0 ) {
+			return '<p style="color: red;">Please enter valid numbers greater than 0.</p>';
+		}
+
+		// 3. The Physics Logic
+		$meters    = $yards * 0.9144;
+		$mps       = $meters / $time;       // Meters per second
+		$kph       = round( $mps * 3.6, 1 );
+		$mph       = round( $kph * 0.621371, 1 );
+
+		// 4. Return Formatted Success Message
+		return "<div style='background: #e3f2fd; color: #0d47a1; padding: 15px; margin-bottom: 20px; border-left: 5px solid #0073aa; border-radius: 4px;'>
+					<strong style='font-size: 1.2em;'>Speed Result:</strong><br>
+					<span style='font-size: 2em; font-weight: bold;'>{$kph}</span> <span style='font-size:0.9em'>KPH</span>
+					<span style='color:#999; margin: 0 10px;'>|</span>
+					<span style='font-size: 1.5em; color: #555;'>{$mph}</span> <span style='font-size:0.8em'>MPH</span>
+				</div>";
+	}
+
 }
 
-// Register the Shortcode with WordPress
-add_shortcode( 'cricket_calculator', 'cpc_render_calculator_shortcode' );
+// Initialize the Plugin Class
+new Cricket_Pace_Calculator();
