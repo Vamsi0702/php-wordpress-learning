@@ -1,0 +1,6 @@
+title,content,category,author_id
+"Migrating Legacy Data to WordPress","This is a test post demonstrating how we migrate data from CSV to WP.","Migration","1"
+"Why WP-CLI is Powerful","Command line interfaces allow for background processing without timeouts.","Engineering","1"
+"rtCamp Engineering Standards","Code must be clean, secure, and scalable for enterprise clients.","Career","1"
+"The Future of CMS","Headless WordPress and block-based editing are the future.","Tech","1"
+"Understanding Transients","Caching is critical for high-traffic sites.","Performance","1"
