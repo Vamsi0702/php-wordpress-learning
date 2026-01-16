@@ -1,0 +1,10 @@
+# WordPress Core
+wp-config.php
+wp-content/uploads/
+wp-content/debug.log
+
+# IDE System Files
+.vscode/
+.idea/
+.DS_Store
+thumbs.db
