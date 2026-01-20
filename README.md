@@ -15,58 +15,57 @@ This repository documents my transition from Data Science to Backend Engineering
 - [x] Shortcode API
 - [x] HTTP API & Transients (Caching)
 
-### Phase 3: Enterprise Engineering
+### Phase 3: Enterprise Engineering (Active)
+- [x] **Custom Database Tables (SQL)** for high-performance logging
 - [x] **WP-CLI (Command Line Interface)** for automation
 - [x] **Data Migration** (Handling bulk data ingestion)
-- [x] Programmatic Content Creation
 
 ---
 
 ## Project Documentation
 
-### 1. Enterprise CLI Bulk Importer (New!)
+### 1. Enterprise Audit Logger (New!)
+**File:** `enterprise-audit-log.php` | **Type:** Security Plugin
+
+A compliance tool that creates a custom SQL table (`dbDelta`) to track user activity, bypassing standard post storage for performance.
+
+**Technical Highlights:**
+* **Custom SQL Schema:** Uses `CREATE TABLE` and `dbDelta()` to manage high-volume log data outside of `wp_posts`.
+* **Security Hooks:** Listeners for `wp_login` to create an immutable audit trail.
+* **Dashboard Widget:** Custom UI implementation within the WP Admin for real-time monitoring.
+
+### 2. Enterprise CLI Bulk Importer
 **File:** `cli-bulk-importer.php` | **Type:** WP-CLI Command
 
 A command-line tool designed to handle large-scale data migrations. It reads a CSV file and programmatically inserts posts into the WordPress database with a visual progress indicator.
 
 **Technical Highlights:**
-* **WP-CLI Integration:** Extends `WP_CLI_Command` to run scripts directly in the terminal, bypassing server timeout limits inherent to browser-based uploads.
-* **Stream Processing:** Uses `fopen()` and `fgetcsv()` to stream data line-by-line, ensuring memory efficiency even with large datasets.
-* **UX for Engineers:** Implements `WP_CLI\Utils\make_progress_bar()` to provide real-time feedback during long-running operations.
-* **Data Integrity:** Validates file existence and sanitizes data using `wp_strip_all_tags()` before insertion.
+* **WP-CLI Integration:** Extends `WP_CLI_Command` to run scripts directly in the terminal, bypassing server timeout limits.
+* **Stream Processing:** Uses `fopen()` to stream data line-by-line for memory efficiency.
+* **UX for Engineers:** Implements `make_progress_bar()` for real-time feedback.
 
-### 2. GitHub Portfolio Fetcher
-**File:** `github-portfolio-fetcher.php` | **Type:** Widget Plugin
+### 3. GitHub Portfolio Fetcher
+**File:** `github-portfolio-fetcher.php` | **Type:** API Widget
 
-A widget that connects to the GitHub REST API to display live repository data, demonstrating third-party integration skills.
+A widget that connects to the GitHub REST API to display live repository data.
 
 **Technical Highlights:**
-* **HTTP API:** Uses `wp_remote_get()` to consume external JSON APIs securely.
-* **Performance Caching:** Implements the WordPress Transients API to cache API responses for 1 hour, reducing server load.
+* **Performance Caching:** Implements the WordPress Transients API to cache API responses for 1 hour.
 * **Error Handling:** Gracefully manages API connection failures.
 
-### 3. Cricket Pace Calculator
-**File:** `cricket-pace-calculator.php` | **Type:** Logic Plugin
+### 4. Cricket Pace Calculator
+**File:** `cricket-pace-calculator.php` | **Type:** OOP Logic
 
 A physics-based calculator for bowling speed, re-engineered using Object-Oriented Programming principles.
 
-**Technical Highlights:**
-* **Object-Oriented Architecture:** Implements a class-based structure with distinct methods for rendering and logic processing.
-* **Security:** Utilizes `floatval()` for strict input sanitization.
-* **Separation of Concerns:** Decouples the UI rendering from the mathematical logic.
-
 ---
 
-## Installation & Usage Instructions
+## Installation & Usage
 
-### For Plugins (Projects 2 & 3)
-1. Upload the file to `wp-content/plugins/`.
-2. Activate via the WordPress Admin Dashboard.
-3. Use the shortcodes: `[cricket_calculator]` or `[my_github_repos]`.
+1. **CLI Tool:** Run `wp vamsi_import run mock-data.csv` in terminal.
+2. **Plugins:** Activate via Dashboard to see the "Enterprise Security Logs" widget.
+3. **Shortcodes:** Use `[cricket_calculator]` or `[my_github_repos]`.
 
-### For CLI Tools (Project 1)
-1. Place `cli-bulk-importer.php` in your plugin directory or mu-plugins.
-2. Open your terminal and navigate to the WordPress root.
-3. Run the import command:
-   ```bash
-   wp vamsi_import run mock-data.csv
+---
+**Author:** Vamsi Bodapati
+*Aspiring WordPress Engineer*
