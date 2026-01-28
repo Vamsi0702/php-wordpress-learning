@@ -1,3 +1,8 @@
+![PHP](https://img.shields.io/badge/PHP-8.0%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![WordPress](https://img.shields.io/badge/WordPress-Enterprise-21759B?style=for-the-badge&logo=wordpress&logoColor=white)
+![Status](https://img.shields.io/badge/Maintenance-Active-success?style=for-the-badge)
+![License](https://img.shields.io/badge/License-GPLv2-blue?style=for-the-badge)
+
 # PHP & WordPress Engineering Portfolio
 
 This repository documents my transition from Data Science to Backend Engineering, specifically focusing on the WordPress ecosystem. It serves as a centralized location for my code, experiments, and custom plugins built using the rtCamp technology stack.
