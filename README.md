@@ -52,6 +52,7 @@ A widget that connects to the GitHub REST API to display live repository data.
 **Technical Highlights:**
 * **Performance Caching:** Implements the WordPress Transients API to cache API responses for 1 hour.
 * **Error Handling:** Gracefully manages API connection failures.
+* **Note:** Ensure your input file matches the structure of `mock-data.csv` exactly. The importer validates headers before processing to maintain data integrity.
 
 ### 4. Cricket Pace Calculator
 **File:** `cricket-pace-calculator.php` | **Type:** OOP Logic
