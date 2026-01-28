@@ -7,6 +7,7 @@
 ![WordPress](https://img.shields.io/badge/WordPress-Enterprise-21759B?style=for-the-badge&logo=wordpress&logoColor=white)
 ![Status](https://img.shields.io/badge/Maintenance-Active-success?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+[![PHP Syntax Check](https://github.com/Vamsi0702/php-wordpress-learning/actions/workflows/php-lint.yml/badge.svg)](https://github.com/Vamsi0702/php-wordpress-learning/actions/workflows/php-lint.yml)
 
 <br/>
 
